@@ -1,0 +1,54 @@
+// C++ code
+//
+int pir = 12;
+int pir_led = 7;
+int interrupt_led1 = 9;
+int interrupt_pin1 = 2;
+int interrupt_led2 = 10;
+int interrupt_pin2 = 3;
+int pir2 = 11;
+int pir2_led = 6;
+
+void setup(){
+  pinMode (pir,INPUT);
+  pinMode(pir_led, OUTPUT);
+  pinMode(pir2, INPUT);
+  pinMode(pir2_led, OUTPUT);
+  pinMode(interrupt_pin1, INPUT);
+  pinMode(interrupt_pin2, INPUT);
+  attachInterrupt(digitalPinToInterrupt(interrupt_pin1),interrupt_fun1,CHANGE);
+  attachInterrupt(digitalPinToInterrupt(interrupt_pin2),interrupt_fun2,CHANGE);
+  Serial.begin(9600);
+}
+
+
+void loop()
+{
+  if(digitalRead(pir) == HIGH)
+  {
+    Serial.println("Motion Detected in 1st pir");
+    digitalWrite(pir_led, HIGH);
+    delay(100);
+    digitalWrite(pir_led, LOW);
+  }
+  if(digitalRead(pir2) == HIGH)
+  {
+    Serial.println("Motion Detected in 2nd pir");
+    digitalWrite(pir2_led, HIGH);
+    delay(100);
+    digitalWrite(pir2_led, LOW);
+  }
+}
+
+void interrupt_fun1()
+{
+  Serial.println("Interrupt one Activated");
+  digitalWrite(interrupt_led1, !digitalRead(interrupt_led1));
+}
+
+
+void interrupt_fun2()
+{
+  Serial.println("Interrupt two Activated");
+  digitalWrite(interrupt_led2, !digitalRead(interrupt_led2));
+}
